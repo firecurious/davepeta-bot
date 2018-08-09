@@ -44,7 +44,7 @@ async def reload(name):
         bot.load_extension(plugin)
         text = 'reloaded {}'.format(name)
     except Exception as e:
-        text = 'failed to reload plugin {}\n{}: {}'.format(name, type(e).__name__, e)
+        text = '{}: {}'.format(type(e).__name__, e)
                
     print(text)
     await bot.say(text)
