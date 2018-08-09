@@ -35,6 +35,19 @@ async def on_message(message):
         await bot.send_message(message.channel, msg)
 
     await bot.process_commands(message)
+    
+@bot.command()
+async def reload(name):
+    plugin = "plugins." + name + ".plugin"
+    try:
+        bot.unload_extension(plugin)
+        bot.load_extension(plugin)
+        text = 'reloaded {}'.format(name)
+    except Exception as e:
+        text = 'failed to reload plugin {}\n{}: {}'.format(name, type(e).__name__, e)
+               
+    print(text)
+    await bot.say(text)
 
 
 #TODO: put this into a function so it looks neater?
