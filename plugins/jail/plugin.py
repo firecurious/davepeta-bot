@@ -10,7 +10,7 @@ class Jail:
         self.reports = {}
         self.bank = {}
         self.people = {}
-        self.jobs = ["policeman", "plumber", "memedealer"]
+        self.jobs = ["policeman", "plumber", "meme dealer", "cowboy"]
 
     @commands.command()
     async def quit(self):
@@ -40,7 +40,7 @@ class Jail:
         p = ctx.message.author
         
         for job in self.jobs:
-            if job in message:
+            if job in " ".join(message):
                 await self.bot.say("okay, you're now a %s." %job)
                 self.people[p] = job
                 self.bank[p] = 0
@@ -55,7 +55,7 @@ class Jail:
         
         p = ctx.message.author
         money = self.bank[p] if p in self.bank else 0
-        text = "your job is %s. you have %s" %(self.people[p], money) if p in self.people else "you're jobless"
+        text = "your job is %s. you have %s" %(self.people[p], money) if p in self.people else "you're jobless. jobs are %s" %self.jobs
         await self.bot.say(text)
 
     @commands.command(pass_context=True)
