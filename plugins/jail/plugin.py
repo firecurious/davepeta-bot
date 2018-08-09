@@ -8,8 +8,9 @@ class Jail:
     def __init__(self, bot):
         self.bot = bot
         self.reports = {}
+        self.bank = {}
         self.people = {}
-        self.jobs = ["policeman", "plumber"]
+        self.jobs = ["policeman", "plumber", "memedealer"]
 
     @commands.command()
     async def quit(self):
@@ -36,10 +37,13 @@ class Jail:
     async def register(self, ctx, *message):
         """register <job>"""
         
+        p = ctx.message.author
+        
         for job in self.jobs:
             if job in message:
-                await self.bot.say("okay, you're now a %s. but not really." %job)
-                self.people[ctx.message.author] = job
+                await self.bot.say("okay, you're now a %s." %job)
+                self.people[p] = job
+                self.bank[p] = 0
                 return
 
         print(message)
@@ -50,19 +54,25 @@ class Jail:
         """see what job you have"""
         
         p = ctx.message.author
-        text = "your job is %s" %self.people[p] if p in self.people else "you're jobless"
+        money = self.bank[p] if p in self.bank else 0
+        text = "your job is %s. you have %s" %(self.people[p], money) if p in self.people else "you're jobless"
         await self.bot.say(text)
 
-    @commands.command()
-    async def bank(self):
-        """bank"""
-
-        await self.bot.say("you have $0")
-
-    @commands.command()
-    async def work(self):
+    @commands.command(pass_context=True)
+    async def work(self, ctx):
         """work"""
-        await self.bot.say("you don't have a job")
+        
+        p = ctx.message.author
+        
+        if p in self.people:
+            text = "you worked for 1 hour as a %s. you make $1/hour" %self.people[p]
+            self.bank[p] += 1
+            
+        
+        else:
+            text = "you don't have a job."
+
+        await self.bot.say(text)
                                 
 
 def setup(bot):
