@@ -8,6 +8,8 @@ class Jail:
     def __init__(self, bot):
         self.bot = bot
         self.reports = {}
+        self.people = {}
+        self.jobs = ["policeman", "plumber"]
 
     @commands.command()
     async def quit(self):
@@ -27,13 +29,29 @@ class Jail:
         p = text[0]
         reason = text[1]
 
-        await self.bot.say("{0} has been reported to the police for {1}".                       format(p, reason))
+        await self.bot.say("{0} has been reported to the police for {1}".format(p, reason))
+        self.jobs[p] = reason
 
-    @commands.command()
-    async def register(self, *message):
+    @commands.command(pass_context=True)
+    async def register(self, ctx, *message):
         """register <job>"""
+        
+        for job in self.jobs:
+            if job in message:
+                await self.bot.say("okay, you're now a %s. but not really." %job)
+                self.people[ctx.message.author] = job
+                return
 
+        print(message)
         await self.bot.say("you're not qualified to do that")
+        
+    @commands.command(pass_context=True)
+    async def status(self, ctx, *message):
+        """see what job you have"""
+        
+        p = ctx.message.author
+        text = "your job is %s" %self.people[p] if p in self.people else "you're jobless"
+        await self.bot.say(text)
 
     @commands.command()
     async def bank(self):
