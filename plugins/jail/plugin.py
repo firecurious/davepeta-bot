@@ -2,7 +2,7 @@ import discord
 from discord.ext import commands
 import asyncio
 
-class Jail:
+class Jail(commands.Cog):
     """Jail-related commands"""
 
     def __init__(self, bot):
