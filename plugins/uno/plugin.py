@@ -50,7 +50,7 @@ class Game(object):
 
         
 #TODO: multiple game objects
-class Uno:
+class Uno(commands.Cog):
     """Uno-related commands"""
 
     def __init__(self, bot):
