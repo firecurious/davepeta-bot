@@ -5,7 +5,7 @@ import asyncio
 from random import *
 import plugins.sburb.classpects as classpects
 
-class Sburb:
+class Sburb(commands.Cog):
     """Sburb-related commands"""
 
     def __init__(self, bot):
@@ -21,9 +21,15 @@ class Sburb:
     async def roll(self, dice : str):
         """write something like 3d20 to roll dice"""
 
+        channel = dice.message.channel
+
+        print(dice.message.content)
+        dice = dice.message.content.split(" ")[1]
+        print(dice)
+
         dice = [int(x) if x else 1 for x in dice.split("d")]
         numbers = [randint(1, dice[1]) for i in range(0, dice[0])]
-        await self.bot.say("🎲 {0} = {1}".format(numbers, sum(numbers)))
+        await channel.send("🎲 {0} = {1}".format(numbers, sum(numbers)))
 
     @commands.command()
     async def flip(self):
