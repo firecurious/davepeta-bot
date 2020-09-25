@@ -15,7 +15,7 @@ async def on_ready():
     print(bot.user.name)
     print(bot.user.id)
     print("------")
-    bot.change_presence(game=discord.Game(name='by themself'))
+    #bot.change_presence(game=discord.Game(name='by themself'))
 
 #TODO: move chatter to a plugin
 @bot.event
