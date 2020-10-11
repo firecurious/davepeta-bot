@@ -65,8 +65,8 @@ class Uno(commands.Cog):
         print(len(game.deck))
         print(ctx.message)
 
-        await self.bot.say(game.deck)
-        await self.bot.say("#" + repr(ctx.message.channel.id))
+        await ctx.channel.send(game.deck)
+        await ctx.channel.send("#" + repr(ctx.message.channel.id))
 
 
 def setup(bot):

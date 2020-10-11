@@ -3,7 +3,7 @@ from discord.ext import commands
 import asyncio
 
 from random import *
-import plugins.sburb.classpects as classpects
+#import plugins.sburb.classpects as classpects
 
 class Sburb(commands.Cog):
     """Sburb-related commands"""
@@ -12,13 +12,7 @@ class Sburb(commands.Cog):
         self.bot = bot
 
     @commands.command()
-    async def blah_blah_blah(self):
-        """blah"""
-
-        await self.bot.say("[some stuff]")
-
-    @commands.command()
-    async def roll(self, dice : str):
+    async def roll(self, ctx, dice : str):
         """write something like 3d20 to roll dice"""
 
         channel = dice.message.channel
@@ -32,15 +26,15 @@ class Sburb(commands.Cog):
         await channel.send("🎲 {0} = {1}".format(numbers, sum(numbers)))
 
     @commands.command()
-    async def flip(self):
-        """write something like 3d20 to roll dice"""
+    async def flip(self, ctx):
+        """flips a single coin"""
 
         coins = ["heads", "tails"]
         shuffle(coins)
-        await self.bot.say(coins[0])
+        await ctx.message.channel.send(coins[0])
 
     @commands.command()
-    async def ball(self):
+    async def ball(self, ctx):
         """shitty 8ball knockoff"""
 
         choices = ["most likely", "no", "never", "no way",
@@ -49,24 +43,24 @@ class Sburb(commands.Cog):
                     "idk"]
 
         shuffle(choices)
-        await self.bot.say(choices[0])
+        await ctx.message.channel.send(choices[0])
 
     @commands.command()
-    async def secret(self, text:str):
+    async def secret(self, ctx, text:str):
         """secret"""
 
         cipher = "~!@#$%^&*()_+`1234567890-="
         abc = "abcdefghijklmnopqrstuvwxyz"
 
-        english_table = string.maketrans(cipher, abc) #cipher to abc
-        cipher_table = string.maketrans(abc, cipher) #abc to cipher
+        english_table = text.maketrans(cipher, abc) #cipher to abc
+        cipher_table = text.maketrans(abc, cipher) #abc to cipher
 
         for char in abc:
             if char in text:
-                await self.bot.say(text.translate(cipher_table))
+                await ctx.message.channel.send(text.translate(cipher_table))
                 return
 
-        await self.bot.say(text.translate(english_table))
+        await ctx.message.channel.send(text.translate(english_table))
 
 def setup(bot):
     bot.add_cog(Sburb(bot))

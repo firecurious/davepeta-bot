@@ -13,24 +13,19 @@ class Jail(commands.Cog):
         self.jobs = ["policeman", "plumber", "meme dealer", "cowboy"]
 
     @commands.command()
-    async def quit(self):
-        await self.bot.say("shutting down")
-        exit()
-
-    @commands.command()
-    async def report(self, *message):
+    async def report(self, ctx, *message):
         """>report user for reason"""
 
         text = " ".join([word for word in message])
 
         if "for" not in text:
-            await self.bot.say("please state a reason")
+            await ctx.message.channel.send("please state a reason")
 
         text = text.split(" for ")
         p = text[0]
         reason = text[1]
 
-        await self.bot.say("{0} has been reported to the police for {1}".format(p, reason))
+        await ctx.message.channel.send("{0} has been reported to the police for {1}".format(p, reason))
         self.jobs[p] = reason
 
     @commands.command(pass_context=True)
@@ -41,13 +36,13 @@ class Jail(commands.Cog):
         
         for job in self.jobs:
             if job in " ".join(message):
-                await self.bot.say("okay, you're now a %s." %job)
+                await ctx.message.channel.send("okay, you're now a %s." %job)
                 self.people[p] = job
                 self.bank[p] = 0
                 return
 
         print(message)
-        await self.bot.say("you're not qualified to do that")
+        await ctx.message.channel.send("you're not qualified to do that")
         
     @commands.command(pass_context=True)
     async def status(self, ctx, *message):
@@ -56,7 +51,7 @@ class Jail(commands.Cog):
         p = ctx.message.author
         money = self.bank[p] if p in self.bank else 0
         text = "your job is %s. you have %s" %(self.people[p], money) if p in self.people else "you're jobless. jobs are %s" %self.jobs
-        await self.bot.say(text)
+        await ctx.message.channel.send(text)
 
     @commands.command(pass_context=True)
     async def work(self, ctx):
@@ -72,7 +67,7 @@ class Jail(commands.Cog):
         else:
             text = "you don't have a job."
 
-        await self.bot.say(text)
+        await ctx.message.channel.send(text)
                                 
 
 def setup(bot):
